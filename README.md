@@ -84,3 +84,58 @@ Future:
 
 - PyTorch
 - Optimization libraries for MPC
+
+
+## Environment Setup
+
+This project uses a dedicated Conda environment to keep dependencies isolated from the system Python installation.
+
+### Create the environment
+
+Run:
+
+```bash
+./setup_env.sh
+```
+
+This will:
+
+- Create the `weather_nn` Conda environment
+- Install all required packages
+- Register the environment as a Jupyter kernel
+
+
+### Start Jupyter Notebook
+
+Run:
+
+```bash
+./start_jupyter.sh
+```
+
+This automatically activates the correct environment and starts Jupyter Notebook.
+
+
+### Manual activation
+
+If needed, the environment can also be activated manually:
+
+```bash
+conda activate weather_nn
+```
+
+
+### Updating dependencies
+
+After adding or changing packages, update the environment:
+
+```bash
+conda env update -f environment.yml
+```
+
+
+To save the current working environment:
+
+```bash
+conda env export > environment_locked.yml
+```

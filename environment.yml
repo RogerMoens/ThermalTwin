@@ -1,0 +1,20 @@
+name: weather_nn
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - numpy=1.26
+  - pandas=2.2
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - jupyter
+  - ipykernel
+  - pip
+
+  - pip:
+      - tensorflow
