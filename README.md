@@ -2,6 +2,12 @@
 
 A grey-box digital twin for apartment thermal modelling, temperature prediction, and future climate control.
 
+## Motivation
+
+Most home climate systems use fixed rules, don't consider thermal behaviour of the system.
+
+ThermalTwin investigates whether an apartment can learn its own behaviour and make better climate decisions using predictions.
+
 ## Overview
 
 ThermalTwin explores how an apartment can learn its own thermal behaviour using sensor data.
@@ -45,12 +51,12 @@ Climate control
 Initially:
 
 - Indoor temperature
+- Indoor humidity
 - Outdoor temperature
+- Outdoor humidty
 - Time information
 
 Future inputs:
-
-- Humidity
 - CO₂ / occupancy estimation
 - Window state
 - Solar radiation
@@ -73,19 +79,8 @@ Built with:
 - Python
 - NumPy
 - Pandas
-- Scikit-learn
 
 Future:
 
 - PyTorch
 - Optimization libraries for MPC
-
-## Motivation
-
-Most home climate systems use fixed rules.
-
-ThermalTwin investigates whether an apartment can learn its own behaviour and make better climate decisions using predictions.
-
-## Status
-
-Early development 🚧
