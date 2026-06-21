@@ -3,6 +3,7 @@ __pycache__/
 
 .env
 
+data/
 data/raw/
 data/*.csv
 

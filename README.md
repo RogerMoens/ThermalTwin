@@ -20,22 +20,24 @@ The long-term goal is to use **Model Predictive Control (MPC)** to optimize acti
 A simplified view:
 
 
+```text
 Outside conditions
-|
-v
-+----------------+
-| Thermal model |
-| + ML correction|
-+----------------+
-|
-v
+        |
+        v
++------------------+
+|  Thermal model   |
+| + ML correction  |
++------------------+
+        |
+        v
 Indoor temperature prediction
-|
-v
+        |
+        v
 MPC controller
-|
-v
+        |
+        v
 Climate control
+```
 
 
 ## Current inputs
