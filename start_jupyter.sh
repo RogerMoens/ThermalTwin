@@ -9,4 +9,4 @@ conda activate $ENV_NAME
 
 echo "Starting Jupyter in $ENV_NAME"
 
-jupyter notebook
+jupyter lab
