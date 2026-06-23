@@ -139,3 +139,8 @@ To save the current working environment:
 ```bash
 conda env export > environment_locked.yml
 ```
+
+### First Results
+<p align="center">
+  <img src="./reports/2026_06_23_first_results.png" alt="First results" width="600" />
+</p>
