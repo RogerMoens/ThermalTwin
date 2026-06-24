@@ -141,6 +141,9 @@ conda env export > environment_locked.yml
 ```
 
 ### First Results
+- For 5-minute ahead prediction, the previous indoor temperature was already an extremely strong predictor due to the building's thermal inertia. 
+- A simple persistence model (predicting the next temperature as the current temperature) achieved the best performance, outperforming both regression models and the neural network. This indicates that short-term indoor temperature dynamics are dominated by the current indoor state rather than by external weather conditions.
+
 <p align="center">
   <img src="./reports/2026_06_23_first_results.png" alt="First results" width="600" />
 </p>
