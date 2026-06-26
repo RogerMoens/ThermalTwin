@@ -65,7 +65,7 @@ Future inputs:
 ## Planned features
 
 - [x] Data collection and exploration
-- [ ] Temperature forecasting
+- [x] Temperature forecasting
 - [ ] Thermal parameter estimation
 - [ ] Grey-box apartment model
 - [ ] Hidden state estimation
