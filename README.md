@@ -66,7 +66,7 @@ Future inputs:
 
 - [x] Data collection and exploration
 - [x] Temperature forecasting
-- [ ] Thermal parameter estimation
+- [x] Thermal parameter estimation (2R2C model)
 - [ ] Grey-box apartment model
 - [ ] Hidden state estimation
 - [ ] Model Predictive Control (MPC)
