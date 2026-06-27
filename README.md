@@ -1,6 +1,12 @@
 # ThermalTwin
 
-A grey-box digital twin for apartment thermal modelling, temperature prediction, and future climate control.
+[![License](https://img.shields.io/github/license/username/project)](...)
+[![PyPI](https://img.shields.io/pypi/v/project)](...)
+[![Python](https://img.shields.io/pypi/pyversions/project)](...)
+[![CI](https://github.com/username/project/actions/workflows/tests.yml/badge.svg)](...)
+[![codecov](https://codecov.io/gh/username/project/branch/main/graph/badge.svg)](...)
+
+Object-oriented framework for indoor temperature prediction using Netatmo weather station data. Therefore, a grey-box digital twin for apartment thermal modelling, temperature prediction, and future climate control is implemented.
 
 ## Motivation
 
