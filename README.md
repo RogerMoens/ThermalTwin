@@ -73,8 +73,8 @@ Future inputs:
 - [x] Data collection and exploration
 - [x] Temperature forecasting
 - [x] Thermal parameter estimation (2R2C model)
-- [ ] Grey-box apartment model
-- [ ] Hidden state estimation
+- [x] Grey-box apartment model
+- [x] Hidden state estimation
 - [ ] Model Predictive Control (MPC)
 - [ ] Smart ventilation control
 
@@ -82,15 +82,7 @@ Future inputs:
 
 Built with:
 
-- Python
-- NumPy
-- Pandas
-
-Future:
-
-- PyTorch
-- Optimization libraries for MPC
-
+- TBD
 
 ## Environment Setup
 
@@ -153,3 +145,5 @@ conda env export > environment_locked.yml
 <p align="center">
   <img src="./reports/2026_06_23_first_results.png" alt="First results" width="600" />
 </p>
+
+- Currently working on the OO part, extracting models from notebooks
