@@ -10,9 +10,7 @@ Object-oriented framework for indoor temperature prediction using Netatmo weathe
 
 ## Motivation
 
-Most home climate systems use fixed rules, don't consider thermal behaviour of the system.
-
-ThermalTwin investigates whether an apartment can learn its own behaviour and make better climate decisions using predictions.
+Most home climate systems use fixed rules, don't consider thermal behaviour of the system. ThermalTwin investigates whether an apartment can learn its own behaviour and make better climate decisions using predictions.
 
 ## Overview
 
