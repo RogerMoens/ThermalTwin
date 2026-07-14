@@ -23,7 +23,8 @@ class LinearOneStepPredictor(BasePredictor):
         return self.model.predict(X)
 
     def save(self, folder):
-
+        folder = Path(folder)
+        folder.mkdir(parents=True, exist_ok=True)
         joblib.dump(self.model, folder / "linear.pkl")
         joblib.dump(self.scaler, folder / "scaler.pkl")
 

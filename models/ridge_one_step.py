@@ -1,3 +1,11 @@
+from pathlib import Path
+
+import joblib
+from sklearn.linear_model import Ridge
+from sklearn.preprocessing import StandardScaler
+
+from .base_predictor import BasePredictor
+
 class RidgeOneStepPredictor(BasePredictor):
 
     def __init__(self, alpha=1.0):
@@ -16,13 +24,13 @@ class RidgeOneStepPredictor(BasePredictor):
 
     def save(self, folder):
 
-        joblib.dump(self.model, folder / "linear.pkl")
+        joblib.dump(self.model, folder / "ridge.pkl")
         joblib.dump(self.scaler, folder / "scaler.pkl")
 
     @classmethod
     def load(cls, folder):
 
         obj = cls()
-        obj.model = joblib.load(folder / "linear.pkl")
+        obj.model = joblib.load(folder / "ridge.pkl")
         obj.scaler = joblib.load(folder / "scaler.pkl")
         return obj
