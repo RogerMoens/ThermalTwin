@@ -11,7 +11,7 @@ class BasePredictor(ABC):
         pass
 
     @abstractmethod
-    def save(self, path):
+    def save(self, folder):
         pass
 
     @classmethod

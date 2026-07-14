@@ -27,6 +27,9 @@ class FeatureEngineer:
 
     target : str
         Target column to predict.
+
+    target_shift: int
+        Target shift required.
     """
 
     def __init__(
@@ -34,11 +37,12 @@ class FeatureEngineer:
         indoor_lags: int = 48,
         outdoor_lags: int = 48,
         target: str = "temp_in",
+        target_shift: int = 1,
     ):
-
         self.indoor_lags = indoor_lags
         self.outdoor_lags = outdoor_lags
         self.target = target
+        self.target_shift = target_shift
 
     # ------------------------------------------------------------------
     # Public API
@@ -59,8 +63,10 @@ class FeatureEngineer:
 
         df = df.copy()
 
+
         df = self.create_time_features(df)
         df = self.create_lag_features(df)
+        df = self.create_target(df)
 
         return df
 
@@ -146,6 +152,24 @@ class FeatureEngineer:
 
         df = df.dropna().reset_index(drop=True)
 
+        return df
+
+    def create_target(
+        self,
+        df: pd.DataFrame,
+    ) -> pd.DataFrame:
+        """
+        Create a shifted prediction target.
+    
+        target_shift = 1 means predicting one timestep ahead.
+        """
+    
+        df = df.copy()
+    
+        df[self.target] = df[self.target].shift(-self.target_shift)
+    
+        df = df.dropna().reset_index(drop=True)
+    
         return df
 
     # ------------------------------------------------------------------
