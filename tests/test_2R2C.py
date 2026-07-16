@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pytest
 
 from models.thermal_2r2c import Thermal2R2CPredictor
 
@@ -84,3 +85,116 @@ def test_save_and_load(tmp_path):
     actual = loaded_model.predict(X)
 
     np.testing.assert_allclose(actual, expected, atol=1e-10)
+
+
+def _fit_on_synthetic_data(dt=Thermal2R2CPredictor.DEFAULT_DT, seed=42):
+    rng = np.random.default_rng(seed)
+    n = 100
+
+    T_out = 10 + rng.normal(scale=2.0, size=n)
+    true_theta = [2.0, 0.5, 5e5, 5e4, 20.0]
+
+    T_air = Thermal2R2CPredictor._simulate(true_theta, T_out, T_air0=20.0, dt=dt)
+
+    model = Thermal2R2CPredictor(dt=dt)
+    model.fit(T_out, T_air)
+
+    return model, T_out, T_air
+
+
+def test_predict_requires_T0_for_ndarray_input():
+    model, T_out, _ = _fit_on_synthetic_data()
+
+    with pytest.raises(ValueError):
+        model.predict(T_out)
+
+
+def test_predict_accepts_explicit_T0_for_ndarray_input():
+    model, T_out, T_air = _fit_on_synthetic_data()
+
+    preds = model.predict(T_out, T0=20.0)
+
+    assert preds.shape == T_air.shape
+    np.testing.assert_allclose(preds, T_air, atol=1e-2)
+
+
+def test_predict_dataframe_without_temp_in_requires_explicit_T0():
+    model, T_out, T_air = _fit_on_synthetic_data()
+
+    X = pd.DataFrame({"temp_out": T_out})
+
+    with pytest.raises(ValueError):
+        model.predict(X)
+
+    preds = model.predict(X, T0=20.0)
+    np.testing.assert_allclose(preds, T_air, atol=1e-2)
+
+
+def test_predict_explicit_T0_overrides_dataframe_temp_in_column():
+    model, T_out, T_air = _fit_on_synthetic_data()
+
+    # bogus temp_in column: explicit T0 should win, not the column value
+    X = pd.DataFrame({"temp_out": T_out, "temp_in": np.full(len(T_out), 999.0)})
+
+    preds = model.predict(X, T0=20.0)
+    np.testing.assert_allclose(preds, T_air, atol=1e-2)
+
+
+def test_predict_before_fit_raises():
+    model = Thermal2R2CPredictor()
+
+    with pytest.raises(RuntimeError):
+        model.predict(np.array([1.0, 2.0]), T0=20.0)
+
+
+def test_dt_defaults_to_five_minutes_and_is_configurable():
+    assert Thermal2R2CPredictor().dt == 300.0
+    assert Thermal2R2CPredictor(dt=1800.0).dt == 1800.0
+
+
+def test_dt_changes_simulated_trajectory():
+    # T_wall0 != T_air0 so there is a nonzero temperature gradient from step 0
+    theta = [2.0, 0.5, 5e5, 5e4, 25.0]
+    T_out = np.full(10, 15.0)
+
+    fast = Thermal2R2CPredictor._simulate(theta, T_out, T_air0=20.0, dt=300.0)
+    slow = Thermal2R2CPredictor._simulate(theta, T_out, T_air0=20.0, dt=1800.0)
+
+    assert not np.allclose(fast, slow)
+    assert abs(slow[1] - 20.0) > abs(fast[1] - 20.0)
+
+
+def test_default_bounds_are_positive_for_physical_parameters():
+    model = Thermal2R2CPredictor()
+
+    for lower, upper in model.bounds[:4]:
+        assert lower is not None and lower > 0
+
+
+def test_bounds_none_disables_constraints():
+    model = Thermal2R2CPredictor(bounds=None)
+
+    assert model.bounds is None
+
+
+def test_custom_bounds_are_stored_as_is():
+    custom_bounds = [(0, 10)] * 5
+
+    model = Thermal2R2CPredictor(bounds=custom_bounds)
+
+    assert model.bounds == custom_bounds
+
+
+def test_save_and_load_roundtrips_dt_and_bounds(tmp_path):
+    model, T_out, T_air = _fit_on_synthetic_data(dt=600.0)
+
+    model.save(tmp_path)
+    loaded = Thermal2R2CPredictor.load(tmp_path)
+
+    assert loaded.dt == 600.0
+    assert loaded.bounds == model.bounds
+
+    np.testing.assert_allclose(
+        loaded.predict(T_out, T0=20.0),
+        model.predict(T_out, T0=20.0),
+    )
