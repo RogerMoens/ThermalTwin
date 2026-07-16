@@ -1,23 +1,26 @@
-import joblib
-import numpy as np
+"""Ridge regression predictor over windowed weather-only features."""
 
+from pathlib import Path
+
+import joblib
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler
 
-from .base_predictor import BasePredictor
+from .base_predictor import BasePredictor, FlattenMixin
 
 
-class RidgeWeatherOnlyPredictor(BasePredictor):
+class RidgeWeatherOnlyPredictor(FlattenMixin, BasePredictor):
+    """
+    L2-regularized predictor over a flattened
+    ``(samples, timesteps, features)`` window.
+    """
 
     def __init__(self, alpha=1.0):
-        self.alpha = alpha
+
         self.scaler = StandardScaler()
         self.model = Ridge(alpha=alpha)
 
-    def _flatten(self, X):
-        return X.reshape(X.shape[0], -1)
-
-    def fit(self, X_train, y_train, **kwargs):
+    def fit(self, X_train, y_train, X_val=None, y_val=None, **kwargs):
 
         X = self._flatten(X_train)
         X = self.scaler.fit_transform(X)
@@ -33,13 +36,17 @@ class RidgeWeatherOnlyPredictor(BasePredictor):
 
     def save(self, folder):
 
+        folder = self._prepare_folder(folder)
         joblib.dump(self.model, folder / "ridge.pkl")
         joblib.dump(self.scaler, folder / "scaler.pkl")
 
     @classmethod
     def load(cls, folder):
 
-        obj = cls()
+        folder = Path(folder)
+
+        obj = cls.__new__(cls)
         obj.model = joblib.load(folder / "ridge.pkl")
         obj.scaler = joblib.load(folder / "scaler.pkl")
+
         return obj
