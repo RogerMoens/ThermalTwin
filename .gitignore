@@ -11,3 +11,5 @@ data/*.csv
 
 .venv/
 venv/
+
+CLAUDE.md
