@@ -1,4 +1,4 @@
-/# ThermalTwin
+# ThermalTwin
 
 Object-oriented framework for indoor temperature prediction using Netatmo weather station data — a grey-box digital twin for apartment thermal modelling and temperature forecasting, laying the groundwork for a smarter home climate *strategy*.
 
