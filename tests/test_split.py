@@ -47,3 +47,25 @@ def test_split_respects_custom_fractions():
     assert len(X_train) == 10
     assert len(X_val) == 5
     assert len(X_test) == 5
+
+
+def test_split_accepts_plain_ndarrays():
+    X = np.arange(100 * 3 * 2).reshape(100, 3, 2)  # e.g. windowed (samples, timesteps, features)
+    y = np.arange(100 * 4).reshape(100, 4)
+
+    splitter = DatasetSplitter(train_size=0.7, val_size=0.15)
+    X_train, X_val, X_test, y_train, y_val, y_test = splitter.split(X, y)
+
+    assert isinstance(X_train, np.ndarray)
+    assert X_train.shape == (70, 3, 2)
+    assert X_val.shape == (15, 3, 2)
+    assert X_test.shape == (15, 3, 2)
+
+    assert y_train.shape == (70, 4)
+    assert y_val.shape == (15, 4)
+    assert y_test.shape == (15, 4)
+
+    # chronological, non-overlapping
+    np.testing.assert_array_equal(X_train, X[:70])
+    np.testing.assert_array_equal(X_val, X[70:85])
+    np.testing.assert_array_equal(X_test, X[85:])

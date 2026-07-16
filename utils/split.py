@@ -15,13 +15,8 @@ class DatasetSplitter:
         train_end = int(self.train_size * n)
         val_end = int((self.train_size + self.val_size) * n)
 
-        X_train = X.iloc[:train_end]
-        X_val = X.iloc[train_end:val_end]
-        X_test = X.iloc[val_end:]
-
-        y_train = y.iloc[:train_end]
-        y_val = y.iloc[train_end:val_end]
-        y_test = y.iloc[val_end:]
+        X_train, X_val, X_test = self._slice(X, train_end, val_end)
+        y_train, y_val, y_test = self._slice(y, train_end, val_end)
 
         return (
             X_train,
@@ -31,3 +26,12 @@ class DatasetSplitter:
             y_val,
             y_test,
         )
+
+    @staticmethod
+    def _slice(data, train_end, val_end):
+        """Chronologically slice a DataFrame/Series or a plain ndarray."""
+
+        if hasattr(data, "iloc"):
+            return data.iloc[:train_end], data.iloc[train_end:val_end], data.iloc[val_end:]
+
+        return data[:train_end], data[train_end:val_end], data[val_end:]
